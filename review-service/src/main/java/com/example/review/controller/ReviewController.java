@@ -1,14 +1,15 @@
 package com.example.review.controller;
 
+import com.example.review.model.Comment;
 import com.example.review.model.Review;
-import com.example.review.repository.ReviewRepository;
+import com.example.review.service.CommentService;
 import com.example.review.service.ReviewService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
+    private final CommentService commentService;
     private final ReviewService reviewService;
 
     @PostMapping
@@ -60,6 +62,35 @@ public class ReviewController {
             @PathVariable Long id,
             @RequestBody Review reviewDetails) { // ✅ 반드시 @RequestBody 사용
         return ResponseEntity.ok(reviewService.updateReview(id, reviewDetails));
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<Comment>> listComments(@PathVariable Long id) {
+        return ResponseEntity.ok(commentService.listByReview(id));
+    }
+
+    // 댓글 추가
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Comment> addComment(
+            @PathVariable Long id,
+            @RequestBody CommentAddRequest req
+    ) {
+        Comment saved = commentService.add(id, req.getUserId(), req.getContent());
+        return ResponseEntity.ok(saved);
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.delete(commentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // DTO (동일 파일 하단에 static class로 간단히)
+    @Getter @Setter
+    static class CommentAddRequest {
+        private String userId;
+        private String content;
     }
 
 }
