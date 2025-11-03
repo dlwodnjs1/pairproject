@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS review (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    movie_id VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    rating INT NOT NULL,
+    comment VARCHAR(1000)
+    );

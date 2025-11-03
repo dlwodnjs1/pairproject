@@ -1,0 +1,67 @@
+body {
+    background: #121212;
+    color: #f1f1f1;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.navbar {
+    background: #000;
+    border-bottom: 2px solid #d4af37;
+}
+.navbar-brand {
+    color: #d4af37 !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.nav-link {
+    color: #f1f1f1 !important;
+    margin-right: 15px;
+}
+.nav-link:hover {
+    color: #d4af37 !important;
+}
+.content {
+    text-align: center;
+    padding: 80px 20px;
+}
+h1 {
+    color: #d4af37;
+    font-weight: 700;
+}
+.lead {
+    color: #ccc;
+    margin-bottom: 40px;
+}
+.card {
+    background: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(212,175,55,0.2);
+    border-color: #d4af37;
+}
+.card h5 {
+    color: #d4af37;
+}
+.card p {
+    color: #fff;
+}
+.form-label {
+    color: #1e1e1e;
+}
+.modal-header h5 {
+    color: #1e1e1e;
+}
+.btn-success {
+    background: #d4af37;
+    border: none;
+    color: #111;
+    font-weight: 600;
+}
+.btn-success:hover {
+    background: #c6a531;
+    color: #fff;
+}

@@ -1,0 +1,5 @@
+rootProject.name = 'ProjectMsa'
+
+include 'eureka-server'
+include 'gateway-service'
+include 'review-service'
