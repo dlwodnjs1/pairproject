@@ -1,8 +1,10 @@
 package com.example.review.service;
 
+import com.example.review.config.RabbitConfig; // ✅ 추가
 import com.example.review.model.Review;
 import com.example.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +15,17 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final RabbitTemplate rabbitTemplate;
 
+    // ✅ 리뷰 저장 + 메시지 발행
     public Review saveReview(Review review) {
-        return reviewRepository.save(review);
+        Review saved = reviewRepository.save(review); // DB에 저장
+
+        // ✅ 저장 직후 메시지 큐로 이벤트 발행
+        rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_NAME, saved.getId());
+        System.out.println("📨 RabbitMQ 메시지 발행 완료 → 큐: " + RabbitConfig.QUEUE_NAME + ", 리뷰 ID: " + saved.getId());
+
+        return saved;
     }
 
     public List<Review> getAllReviews() {
@@ -25,7 +35,7 @@ public class ReviewService {
     // 특정 리뷰 조회 (ID로 조회)
     public Review getReviewById(Long id) {
         Optional<Review> review = reviewRepository.findById(id);
-        return review.orElse(null); // 리뷰가 없으면 null 반환
+        return review.orElse(null);
     }
 
     public void deleteReview(Long id) {
@@ -39,8 +49,6 @@ public class ReviewService {
     public List<Review> getReviewsByUser(String userId) {
         return reviewRepository.findByUserId(userId);
     }
-
-
 
     public Review updateReview(Long id, Review reviewDetails) {
         System.out.println("[updateReview] 요청 id = " + id);
@@ -70,7 +78,4 @@ public class ReviewService {
 
         return saved;
     }
-
 }
-
-
